@@ -83,7 +83,6 @@ export class Board extends Component {
 
     return (
       <div className="square" style={boardSize}>
-        <div className="inner-square"></div>
         {components}
         {this.props.data.intro && (<Splash title="Color Slider" />)}
       </div>

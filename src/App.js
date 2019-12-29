@@ -4,6 +4,7 @@ import { Board } from './Board';
 import { StartButton } from './StartButton';
 import './App.css';
 
+let cachedState = null;
 let LOCATION_MAP = {};
 const COLOR_MAP = {
   "5": [
@@ -55,11 +56,17 @@ class App extends Component {
       }
     }
     this.newGame = this.newGame.bind(this);
+    this.resetGame = this.resetGame.bind(this);
     this.handleTileMove = this.handleTileMove.bind(this);
   }
 
   newGame(size) {
-    this.setState(resetStates(size));
+    cachedState = resetStates(size);
+    this.setState(JSON.parse(JSON.stringify(cachedState)));
+  }
+
+  resetGame() {
+    this.setState(JSON.parse(JSON.stringify(cachedState)));
   }
 
   handleTileMove(newTilesState) {
@@ -78,14 +85,19 @@ class App extends Component {
 
   render() {
     let miniBoard = "";
+    let resetButton = "";
     if (!this.state.intro) {
       miniBoard = <MiniBoard data={this.state.mini} />;
+      resetButton = <StartButton text="RESET" onSize={this.resetGame}/>;
     }
     return (
       <div className="App">
         <div className="button-bar">
           {miniBoard}
-          <StartButton text="START" onSize={this.newGame} size="5"/>
+          <div>
+            <StartButton text="START" onSize={this.newGame} size="5"/>
+            {resetButton}
+          </div>
         </div>
         <Board onMoveTile={this.handleTileMove} data={this.state}/>
         <h2 className="counter">{this.state.message}</h2>
@@ -97,8 +109,6 @@ class App extends Component {
 export default App;
 
 function initApp() {
-  // initLocations(4);
-  // initLocations(3);
   initLocations(5);
 }
 
@@ -142,7 +152,6 @@ function resetStates(size) {
     }
   }
 
-console.log(state);
   return state;
 }
 
@@ -163,46 +172,3 @@ function randomizeTiles(size, noRandonBlank) {
 
   return randomizedList;
 }
-
-// function shuffleTiles(a) {
-//   const max = a.length-1;
-//   let current = max;
-//   let count = 0;
-//   const maxCount = Math.floor(Math.random() * 25) + Math.pow(4, Math.sqrt(max));
-//   while (count++ < maxCount) {
-//     let availSpaces = getAvailableSpaces(current, a);
-//     let i = Math.floor(Math.random()*availSpaces.length);
-//     let swapIdx = Number(availSpaces[i]);
-//     [a[swapIdx], a[current]] = [a[current], a[swapIdx]];
-//     current = swapIdx;
-//   }
-
-//   console.log(`shuffled ${maxCount} times --> `,a);
-//   return a;
-// }
-
-// function getAvailableSpaces(n, arr) {
-//   const size = Math.sqrt(arr.length-1);
-//   const row = Math.ceil(n/size);
-//   const col = n - ((row-1) * size);
-//   let retArr = [];
-
-//   const up = row > 1 ? n-size : 0;
-//   if (up) {
-//     retArr.push(up);
-//   }
-//   const down = row < size ? n+size : 0;
-//   if (down) {
-//     retArr.push(down);
-//   }
-//   const left = col > 1 ? n-1 : 0;
-//   if (left) {
-//     retArr.push(left);
-//   }
-//   const right = col < size ? n+1 : 0;
-//   if (right) {
-//     retArr.push(right);
-//   }
-
-//   return retArr;
-// }

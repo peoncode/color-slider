@@ -9,16 +9,6 @@
   margin: 0 50px 0 50px;
 }
 
-.inner-square {
-  position: absolute;
-  /* border: 10px solid rgb(87, 77, 77); */
-  top: 90px;
-  left: 90px;
-  height: 300px;
-  width: 300px;
-  /* z-index: 100; */
-}
-
 .intro {
   height: 250px;
   width: 250px;
