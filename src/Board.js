@@ -41,7 +41,7 @@ export class Board extends Component {
   }
 
   moveTile(button) {
-    if (this.props.data.win === "false") {
+    if (this.props.data.win === false) {
       const location = parseInt(button.getAttribute("tid"));
       const tileId = location;
       const newLoc = this.__nextMove(location);
@@ -56,7 +56,7 @@ export class Board extends Component {
   }
 
   __tileFilter(key) {
-    if (this.props.data.win === "true") {
+    if (this.props.data.win === true) {
       return true;
     }
 
@@ -71,7 +71,10 @@ export class Board extends Component {
   render() {
     const components = Object.keys(this.props.data.tiles).filter((key) => this.__tileFilter(key)).map((id) => {
       // console.log(`Tile tId=${id} color=${this.props.data.tiles[id]}`);
-      return <Tile tId={id} overlay={!INNER_TILES_MAP[this.props.data.size].includes(Number(id))} color={this.props.data.tiles[id]} key={"t"+id+"_"+this.props.data.size} loc={this.props.data.loc[id]} moveTile={this.moveTile} />
+      const isCenterTile = INNER_TILES_MAP[this.props.data.size].includes(Number(id));
+      const addOverlay = this.props.data.intro === false && !isCenterTile;
+      const hideButton = this.props.data.win === true && !isCenterTile;
+      return <Tile tId={id} overlay={addOverlay} hide={hideButton} color={this.props.data.tiles[id]} key={"t"+id+"_"+this.props.data.size} loc={this.props.data.loc[id]} moveTile={this.moveTile} />
     });
     const boardSize = {
       height: this.props.data.size*100,

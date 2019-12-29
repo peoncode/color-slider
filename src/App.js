@@ -26,24 +26,28 @@ class App extends Component {
 
     this.state = {
       "intro": true,
-      "win": "true",
+      "win": false,
       "count": 0,
-      "message": `Select a puzzle size to start`,
+      "message": `Match the pattern!`,
       "size": 5,
       "loc": LOCATION_MAP['5'],
       "tiles": {
-        1: "1",
-        2: "2",
-        3: "3",
-        4: "4",
-        5: "5",
-        8: "8",
-        9: "9",
-        12: "12",
-        13: "13",
-        14: "14",
-        15: "15",
-        16: "win"
+        1: "red",
+        2: "yellow",
+        3: "green",
+        4: "blue",
+        5: "orange",
+        6: "white",
+        10: "yellow",
+        11: "green",
+        15: "blue",
+        16: "orange",
+        20: "red",
+        21: "blue",
+        22: "red",
+        23: "yellow",
+        24: "green",
+        25: "white"
       },
       "mini": {
         "tiles": {},
@@ -61,7 +65,7 @@ class App extends Component {
   handleTileMove(newTilesState) {
     const max = INNER_TILES_MAP[this.state.size].length;
     const newCount = this.state.count+1;
-    for(let i=0; i<max; i++) {
+    for (let i=0; i<max; i++) {
       const idx = INNER_TILES_MAP[this.state.size][i];
       if (newTilesState[idx] !== this.state.mini.tiles[i+1]) {
         this.setState({"tiles": newTilesState, "count": newCount, "message": `Moves: ${newCount}`});
@@ -69,17 +73,19 @@ class App extends Component {
       }
     }
 
-    this.setState({"win": "true", "message": `You did it in ${newCount} moves!`, "tiles": newTilesState});
+    this.setState({"win": true, "message": `You did it in ${newCount} moves!`, "tiles": newTilesState});
   }
 
   render() {
+    let miniBoard = "";
+    if (!this.state.intro) {
+      miniBoard = <MiniBoard data={this.state.mini} />;
+    }
     return (
       <div className="App">
         <div className="button-bar">
-          <MiniBoard data={this.state.mini} />
-          <div >
-            <StartButton text="START" onSize={this.newGame} size="5"/>
-          </div>
+          {miniBoard}
+          <StartButton text="START" onSize={this.newGame} size="5"/>
         </div>
         <Board onMoveTile={this.handleTileMove} data={this.state}/>
         <h2 className="counter">{this.state.message}</h2>
@@ -114,7 +120,7 @@ function initLocations(size) {
 function resetStates(size) {
   const max = size * size;
   let state = {
-    "win": "false",
+    "win": false,
     "intro": false,
     "count": 0,
     "message": `Moves: 0`,

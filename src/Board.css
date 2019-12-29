@@ -6,6 +6,7 @@
 
 .mini-square {
   position: relative;
+  margin: 0 50px 0 50px;
 }
 
 .inner-square {

@@ -20,6 +20,10 @@
   opacity: 0.5;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 .red {
   background-color: #e41858;
 }
