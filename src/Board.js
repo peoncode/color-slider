@@ -41,7 +41,7 @@ export class Board extends Component {
   }
 
   moveTile(button) {
-    if (this.props.data.win === false) {
+    if (this.props.data.intro === false) {
       const location = parseInt(button.getAttribute("tid"));
       const tileId = location;
       const newLoc = this.__nextMove(location);
