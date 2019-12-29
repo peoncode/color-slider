@@ -12,20 +12,22 @@ export class Tile extends Component {
   }
 
   render() {
-    let className;
+    let disabled = "";
+    let className = [this.props.color];
     let location = this.props.loc;
-    let label = this.props.id;
     if (this.props.id === "win") {
-      label = "";
-      className = "win-button";
+      className.push("win-button");
+    } else if (this.props.mini === "true") {
+      className.push("MiniTile");
+      disabled = "disabled";
     } else {
-      className = "Tile";
+      className.push("Tile");
     }
+
+    this.props.overlay && className.push("overlay");
     
     return (
-      <button className={className} style={location} tid={this.props.tId} onClick={this.handleClick}>
-        {label}
-      </button>
+      <button className={className.join(' ')} style={location} tid={this.props.tId} onClick={this.handleClick} disabled={disabled}></button>
     );
   }
 }

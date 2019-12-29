@@ -3,6 +3,10 @@ import { Tile } from './Tile';
 import { Splash } from './Splash';
 import './Board.css';
 
+const INNER_TILES_MAP = {
+  "5": [7, 8, 9, 12, 13, 14, 17, 18, 19]
+}
+
 export class Board extends Component {
   constructor(props) {
     super(props);
@@ -11,10 +15,10 @@ export class Board extends Component {
 
   __nextMove(n) {
     const size = parseInt(this.props.data.size);
-    const max = ""+size*size;
     const row = Math.ceil(n/size);
     const col = n - ((row-1) * size);
-    const freeSpot = Number(Object.entries(this.props.data.tiles).find((e) => e[1] === max)[0]);
+    const entries = Object.entries(this.props.data.tiles);
+    const freeSpot = Number(entries.find((e) => e[1] === null)[0]);
   
     const up = row > 1 ? n-size : 0;
     if (up === freeSpot) {
@@ -58,7 +62,7 @@ export class Board extends Component {
 
     const num = parseInt(key);
     const max = this.props.data.size*this.props.data.size;
-    if (num <= max && this.props.data.tiles[key] < max) {
+    if (num <= max && this.props.data.tiles[key]) {
       return true;
     }
     return false;
@@ -66,18 +70,19 @@ export class Board extends Component {
 
   render() {
     const components = Object.keys(this.props.data.tiles).filter((key) => this.__tileFilter(key)).map((id) => {
-      // console.log(`Tile tId=${id} id=${this.props.data.tiles[id]}`);
-      return <Tile tId={id} id={this.props.data.tiles[id]} key={"t"+id+"_"+this.props.data.size} loc={this.props.data.loc[id]} moveTile={this.moveTile} />
+      // console.log(`Tile tId=${id} color=${this.props.data.tiles[id]}`);
+      return <Tile tId={id} overlay={!INNER_TILES_MAP[this.props.data.size].includes(Number(id))} color={this.props.data.tiles[id]} key={"t"+id+"_"+this.props.data.size} loc={this.props.data.loc[id]} moveTile={this.moveTile} />
     });
     const boardSize = {
-      height: this.props.data.size*125,
-      width: this.props.data.size*125,
+      height: this.props.data.size*100,
+      width: this.props.data.size*100,
     };
 
     return (
       <div className="square" style={boardSize}>
+        <div className="inner-square"></div>
         {components}
-        {this.props.data.intro && (<Splash title="Number Slider" />)}
+        {this.props.data.intro && (<Splash title="Color Slider" />)}
       </div>
     );
   }
