@@ -5,6 +5,7 @@ import { StartButton } from './StartButton';
 import './App.css';
 
 let cachedState = null;
+let BUTTON_SIZE = 70;
 let LOCATION_MAP = {};
 const COLOR_MAP = {
   "5": [
@@ -31,6 +32,7 @@ class App extends Component {
       "count": 0,
       "message": `Match the pattern!`,
       "size": 5,
+      "buttonSize": BUTTON_SIZE,
       "loc": LOCATION_MAP['5'],
       "tiles": {
         1: "red",
@@ -52,7 +54,8 @@ class App extends Component {
       },
       "mini": {
         "tiles": {},
-        "size": 3
+        "size": 3,
+        "buttonSize": BUTTON_SIZE/2
       }
     }
     this.newGame = this.newGame.bind(this);
@@ -119,8 +122,8 @@ function initLocations(size) {
     const row = Math.ceil(i/size);
     const col = i - ((row-1) * size);
     arr.push({
-      top: (row-1) * 100,
-      left: (col-1) * 100
+      top: (row-1) * BUTTON_SIZE,
+      left: (col-1) * BUTTON_SIZE
     });
   }
   arr.unshift(null);
@@ -135,11 +138,13 @@ function resetStates(size) {
     "count": 0,
     "message": `Moves: 0`,
     "size": size,
+    "buttonSize": BUTTON_SIZE,
     "loc": LOCATION_MAP[String(size)],
     "tiles": {},
     "mini": {
       "tiles": {},
-      "size": size-2
+      "size": size-2,
+      "buttonSize": BUTTON_SIZE/2
     }
   };
   const arr = randomizeTiles(size);

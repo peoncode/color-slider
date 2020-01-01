@@ -74,17 +74,17 @@ export class Board extends Component {
       const isCenterTile = INNER_TILES_MAP[this.props.data.size].includes(Number(id));
       const addOverlay = this.props.data.intro === false && !isCenterTile;
       const hideButton = this.props.data.win === true && !isCenterTile;
-      return <Tile tId={id} overlay={addOverlay} hide={hideButton} color={this.props.data.tiles[id]} key={"t"+id+"_"+this.props.data.size} loc={this.props.data.loc[id]} moveTile={this.moveTile} />
+      return <Tile tId={id} buttonSize={this.props.data.buttonSize} overlay={addOverlay} hide={hideButton} color={this.props.data.tiles[id]} key={"t"+id+"_"+this.props.data.size} loc={this.props.data.loc[id]} moveTile={this.moveTile} />
     });
     const boardSize = {
-      height: this.props.data.size*100,
-      width: this.props.data.size*100,
+      height: this.props.data.size*this.props.data.buttonSize,
+      width: this.props.data.size*this.props.data.buttonSize,
     };
 
     return (
       <div className="square" style={boardSize}>
         {components}
-        {this.props.data.intro && (<Splash title="Color Slider" />)}
+        {this.props.data.intro && (<Splash title="Color Slider" buttonSize={this.props.data.buttonSize}/>)}
       </div>
     );
   }

@@ -14,12 +14,14 @@ export class Tile extends Component {
   render() {
     let disabled = "";
     let className = [this.props.color];
-    let location = this.props.loc;
+    let location = JSON.parse(JSON.stringify(this.props.loc));
+    location.width = this.props.buttonSize + "px";
+    location.height = this.props.buttonSize + "px";
     if (this.props.mini === "true") {
-      className.push("MiniTile");
+      className.push("mini-tile");
       disabled = "disabled";
     } else {
-      className.push("Tile");
+      className.push("tile");
     }
 
     this.props.overlay && className.push("overlay");
